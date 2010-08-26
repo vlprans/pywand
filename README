@@ -1,3 +1,0 @@
-To regenerate wand.xml file use something like this:
-
-python -m ctypeslib.h2xml -I/usr/include/ImageMagick/ /usr/include/ImageMagick/wand/MagickWand.h -o wand.xml

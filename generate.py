@@ -1,6 +1,10 @@
 import sys
+import os.path
+import subprocess
 import ctypes.util
 import ctypeslib.codegen.codegenerator
+from ctypeslib import xml2py, h2xml
+
 
 class IMGenerator(ctypeslib.codegen.codegenerator.Generator):
     def get_sharedlib(self, dllname, cc):
@@ -24,8 +28,20 @@ class IMGenerator(ctypeslib.codegen.codegenerator.Generator):
 
 ctypeslib.codegen.codegenerator.Generator = IMGenerator # monkey-patch it
 
+def _run_h2xml():
+    p = subprocess.Popen(['MagickWand-config', '--cppflags'],
+                         stdout=subprocess.PIPE)
+    cpp_directives = p.stdout.read().decode().strip()
+    include_dir = cpp_directives.split('-I')[1]
+    argv = ['generate.py', cpp_directives, '-o', 'magickwand.xml',
+            os.path.join(include_dir, 'wand/MagickWand.h')]
+    return h2xml.main(argv)
+
+def _run_xml2py():
+    argv = ['generate.py', '-l', libname, '-r', '[A-Z]+.*', '-o', '_magickwand.py', 'magickwand.xml']
+    return xml2py.main(argv)
+
 if __name__ == "__main__":
-    from ctypeslib.xml2py import main
     libname = ctypes.util.find_library('MagickWand')
-    argv = ['generate.py', '-l', libname, '-r', '[A-Z]+.*', '-o', 'wand.py', 'wand.xml']
-    sys.exit(main(argv))
+    _run_h2xml()
+    _run_xml2py()
