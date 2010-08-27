@@ -1,1 +1,1 @@
-from ._magickwand import *
+from .magickwand import *
