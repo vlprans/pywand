@@ -9,8 +9,8 @@
 import ctypes
 
 
-__all__ = ['CTypeWrapper', 'get_ctype_wrapper',
-           'adapt_ctype', 'adapt_cfunc', 'adapt_module']
+__all__ = ['CTypeWrapperMeta', 'CTypeWrapper',
+           'get_ctype_wrapper', 'adapt_ctype', 'adapt_cfunc', 'adapt_module']
 
 
 class CTypeWrapperMeta(type):
