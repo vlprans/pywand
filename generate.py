@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+
 ##
 # Copyright (c) 2010 Sprymix Inc.
 # All rights reserved.
@@ -5,6 +7,9 @@
 # See LICENSE for details.
 ##
 
+##
+# This script is Py2k-only because ctypeslib is not available for Py3k.
+##
 
 import sys
 import os.path
