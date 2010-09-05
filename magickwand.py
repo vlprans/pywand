@@ -35,12 +35,12 @@ class IMWrapperMeta(CTypeWrapperMeta):
         if _im_destroy:
             dct['_destroy'] = lambda self: _im_destroy(self)
         if _im_get_exception:
-            def _throw_error(self):
+            def throw_error(self):
                 severity = api.ExceptionType()
                 description = _im_get_exception(self, severity)
-                raise MagickWandError(description)
+                raise MagickWandError(description.decode())
 
-            dct['_throw_error'] = _throw_error
+            dct['throw_error'] = throw_error
 
         return super().__new__(mcs, name, bases, dct)
 
