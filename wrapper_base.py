@@ -83,7 +83,8 @@ class CTypeWrapper(metaclass=CTypeWrapperMeta):
 
     def __del__(self):
         if hasattr(self, '_destroy') and self._obj:
-            self._destroy()
+            #self._destroy() # XXX
+            self._obj = None
 
     def __copy__(self):
         if hasattr(self, '_clone'):
