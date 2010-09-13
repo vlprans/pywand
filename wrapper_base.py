@@ -77,7 +77,7 @@ class CTypeWrapper(metaclass=CTypeWrapperMeta):
                 raise TypeError('expected %s instance or pointer, got %s' % (self.ctype.__name__,
                                                                              obj))
         elif hasattr(self, '_create'):
-            self._obj = self._create()
+            self._obj = self._create()._as_parameter_
         else:
             self._obj = None
 

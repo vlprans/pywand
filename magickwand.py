@@ -103,4 +103,4 @@ class XMLTree(IMWrapper):
     _im_destroy = api.DestroyXMLTree
 
 
-adapt_module(api)
+#adapt_module(api)
