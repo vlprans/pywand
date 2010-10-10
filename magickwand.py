@@ -14,7 +14,7 @@ from . import _magickwand as api
 
 
 api.MagickWandGenesis()
-atexit.register(api.MagickWandTerminus)
+#atexit.register(api.MagickWandTerminus)
 
 
 class MagickWandError(Exception): pass

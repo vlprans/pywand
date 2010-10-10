@@ -10,14 +10,16 @@ Here is a small example of a code that creates an image's thumbnail
 (adapted from MagickWand examples on
 http://www.imagemagick.org/script/magick-wand.php ):
 
-from pyim import *
+    from pywand import *
 
-if __name__ == '__main__':
-    wand = MagickWand()
-    MagickReadImage(wand, 'logo.gif')
+    if __name__ == '__main__':
+        wand = NewMagickWand()
+        if not MagickReadImage(wand, 'logo.gif'):
+            wand.throw_error()
 
-    MagickResetIterator(wand)
-    while MagickNextImage(wand):
-        MagickResizeImage(wand, 106, 80, LanczosFilter, 1.)
+        MagickResetIterator(wand)
+        while MagickNextImage(wand):
+            MagickResizeImage(wand, 106, 80, LanczosFilter, 1.)
 
-    MagickWriteImages(wand, 'logo_thumb.gif', True)
+        if not MagickWriteImages(wand, 'logo_thumb.gif', True):
+            wand.throw_error()
