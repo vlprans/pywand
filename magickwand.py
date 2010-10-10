@@ -11,7 +11,6 @@ import atexit
 
 from .wrapper_base import *
 from . import _magickwand as api
-from ._magickwand import *
 
 
 api.MagickWandGenesis()
@@ -102,5 +101,5 @@ class XMLTree(IMWrapper):
     _ctype = api.XMLTreeInfo
     _im_destroy = api.DestroyXMLTree
 
-
-#adapt_module(api)
+adapt_module(api)
+from ._magickwand import *

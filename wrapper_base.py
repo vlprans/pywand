@@ -47,9 +47,13 @@ class CTypeWrapperMeta(type):
     def adapt_cfunc(mcs, func):
         if not isinstance(func, ctypes._CFuncPtr):
             raise TypeError('expected ctypes FuncPtr')
-        if func.restype is not None:
-            func.restype = mcs.adapt_ctype(func.restype)
         func.argtypes = [mcs.adapt_ctype(t) for t in func.argtypes]
+        if func.restype is not None:
+            try:
+                wrapper = mcs.get_ctype_wrapper(func.restype)
+            except ValueError:
+                wrapper = None
+            return lambda *args: wrapper(func(*args)) if wrapper else func(*args)
         return func
 
     @classmethod
@@ -57,7 +61,7 @@ class CTypeWrapperMeta(type):
         for name in module.__all__ if hasattr(module, '__all__') else dir(module):
             func = getattr(module, name)
             if isinstance(func, ctypes._CFuncPtr):
-                adapt_cfunc(func)
+                setattr(module, name, adapt_cfunc(func))
 
 
 get_ctype_wrapper = CTypeWrapperMeta.get_ctype_wrapper
@@ -83,7 +87,7 @@ class CTypeWrapper(metaclass=CTypeWrapperMeta):
 
     def __del__(self):
         if hasattr(self, '_destroy') and self._obj:
-            #self._destroy() # XXX
+            self._destroy()
             self._obj = None
 
     def __copy__(self):
